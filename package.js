@@ -25,9 +25,9 @@ Package.onUse(function(api)
     api.use("random", "client");
     api.use("service-configuration", ["client", "server"]);
 
-    api.addFiles("accounts-twitch-client.js", "client");
-    api.addFiles("accounts-twitch-server.js", "server");
-    api.addFiles("accounts-twitch.js");
+    api.addFiles("src/accounts-twitch-client.js", "client");
+    api.addFiles("src/accounts-twitch-server.js", "server");
+    api.addFiles("src/accounts-twitch.js");
 
     api.export("Twitch");
 });
