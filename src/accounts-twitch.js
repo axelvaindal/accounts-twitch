@@ -1,8 +1,8 @@
-Accounts.oauth.registerService('twitch');
+Accounts.oauth.registerService("twitch");
 
 if (Meteor.isClient) {
   Meteor.loginWithTwitch = function(options, callback) {
-    if (!callback && typeof options === 'function') {
+    if (!callback && typeof options === "function") {
       callback = options;
       options = null;
     }
@@ -14,11 +14,11 @@ if (Meteor.isClient) {
   };
 } else {
   Accounts.addAutopublishFields({
-    forLoggedInUser: ['services.twitch'],
+    forLoggedInUser: ["services.twitch"],
     forOtherUsers: [
-      'services.twitch.display_name',
-      'services.twitch.name',
-      'services.twitch.logo',
+      "services.twitch.display_name",
+      "services.twitch.name",
+      "services.twitch.logo",
     ],
   });
 }

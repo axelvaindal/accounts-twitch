@@ -4,14 +4,14 @@ Twitch.requestCredential = function(
   options,
   credentialRequestCompleteCallback
 ) {
-  if (!credentialRequestCompleteCallback && typeof options === 'function') {
+  if (!credentialRequestCompleteCallback && typeof options === "function") {
     credentialRequestCompleteCallback = options;
     options = {};
   } else if (!options) {
     options = {};
   }
 
-  var config = ServiceConfiguration.configurations.findOne({service: 'twitch'});
+  var config = ServiceConfiguration.configurations.findOne({service: "twitch"});
 
   if (!config) {
     credentialRequestCompleteCallback &&
@@ -20,29 +20,29 @@ Twitch.requestCredential = function(
   }
 
   var credentialToken = Random.secret();
-  var loginStyle = OAuth._loginStyle('twitch', config, options);
-  var requiredScope = ['user_read'];
+  var loginStyle = OAuth._loginStyle("twitch", config, options);
+  var requiredScope = ["user_read"];
   var scope = (options && options.requestPermissions) || [
-    'user_read',
-    'channel_read',
+    "user_read",
+    "channel_read",
   ];
   scope = _.union(scope, requiredScope);
-  var flatScope = _.map(scope, encodeURIComponent).join('+');
+  var flatScope = _.map(scope, encodeURIComponent).join("+");
 
   var loginUrl =
-    'https://id.twitch.tv/oauth2/authorize' +
-    '?response_type=code' +
-    '&client_id=' +
+    "https://id.twitch.tv/oauth2/authorize" +
+    "?response_type=code" +
+    "&client_id=" +
     config.clientId +
-    '&redirect_uri=' +
-    OAuth._redirectUri('twitch', config) +
-    '&scope=' +
+    "&redirect_uri=" +
+    OAuth._redirectUri("twitch", config) +
+    "&scope=" +
     flatScope +
-    '&state=' +
+    "&state=" +
     OAuth._stateParam(loginStyle, credentialToken);
 
   OAuth.launchLogin({
-    loginService: 'twitch',
+    loginService: "twitch",
     loginStyle: loginStyle,
     loginUrl: loginUrl,
     credentialRequestCompleteCallback: credentialRequestCompleteCallback,

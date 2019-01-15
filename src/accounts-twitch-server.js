@@ -1,6 +1,6 @@
 AccountsTwitch = {};
 
-Oauth.registerService('twitch', 2, null, function(query) {
+Oauth.registerService("twitch", 2, null, function(query) {
   var response = getTokenResponse(query);
   var accessToken = response.access_token;
   var user = getUser(accessToken).data[0];
@@ -19,32 +19,32 @@ Oauth.registerService('twitch', 2, null, function(query) {
 });
 
 var getTokenResponse = function(query) {
-  var config = ServiceConfiguration.configurations.findOne({service: 'twitch'});
+  var config = ServiceConfiguration.configurations.findOne({service: "twitch"});
 
   if (!config) throw new ServiceConfiguration.ConfigError();
 
   var response;
   try {
-    response = HTTP.post('https://id.twitch.tv/oauth2/token', {
+    response = HTTP.post("https://id.twitch.tv/oauth2/token", {
       params: {
         code: query.code,
         client_id: config.clientId,
-        redirect_uri: OAuth._redirectUri('twitch', config),
+        redirect_uri: OAuth._redirectUri("twitch", config),
         client_secret: OAuth.openSecret(config.secret),
-        grant_type: 'authorization_code',
+        grant_type: "authorization_code",
       },
     });
 
     if (response.error)
       // if the http response was an error
       throw response.error;
-    if (typeof response.content === 'string')
+    if (typeof response.content === "string")
       response.content = JSON.parse(response.content);
     if (response.content.error) throw response.content;
   } catch (err) {
     throw _.extend(
       new Error(
-        'Failed to complete OAuth handshake with Twitch. ' + err.message
+        "Failed to complete OAuth handshake with Twitch. " + err.message
       ),
       {response: err.response}
     );
@@ -55,12 +55,12 @@ var getTokenResponse = function(query) {
 
 var getUser = function(accessToken) {
   try {
-    return HTTP.get('https://api.twitch.tv/helix/users', {
-      headers: {Authorization: 'Bearer ' + accessToken},
+    return HTTP.get("https://api.twitch.tv/helix/users", {
+      headers: {Authorization: "Bearer " + accessToken},
     }).data;
   } catch (err) {
     throw _.extend(
-      new Error('Failed to fetch identity from Twitch. ' + err.message),
+      new Error("Failed to fetch identity from Twitch. " + err.message),
       {response: err.response}
     );
   }
