@@ -1,4 +1,4 @@
-Twitch = {};
+Twitch = {}; // eslint-disable-line no-global-assign
 
 Twitch.requestCredential = function(
   options,
@@ -11,25 +11,29 @@ Twitch.requestCredential = function(
     options = {};
   }
 
-  var config = ServiceConfiguration.configurations.findOne({service: "twitch"});
+  const config = ServiceConfiguration.configurations.findOne({
+    service: "twitch",
+  });
 
   if (!config) {
-    credentialRequestCompleteCallback &&
+    if (credentialRequestCompleteCallback) {
       credentialRequestCompleteCallback(new ServiceConfiguration.ConfigError());
+    }
+
     return;
   }
 
-  var credentialToken = Random.secret();
-  var loginStyle = OAuth._loginStyle("twitch", config, options);
-  var requiredScope = ["user_read"];
-  var scope = (options && options.requestPermissions) || [
+  const credentialToken = Random.secret();
+  const loginStyle = OAuth._loginStyle("twitch", config, options);
+  const requiredScope = ["user_read"];
+  let scope = (options && options.requestPermissions) || [
     "user_read",
     "channel_read",
   ];
   scope = _.union(scope, requiredScope);
-  var flatScope = _.map(scope, encodeURIComponent).join("+");
+  const flatScope = _.map(scope, encodeURIComponent).join("+");
 
-  var loginUrl =
+  const loginUrl =
     "https://id.twitch.tv/oauth2/authorize" +
     "?response_type=code" +
     "&client_id=" +
@@ -43,9 +47,9 @@ Twitch.requestCredential = function(
 
   OAuth.launchLogin({
     loginService: "twitch",
-    loginStyle: loginStyle,
-    loginUrl: loginUrl,
-    credentialRequestCompleteCallback: credentialRequestCompleteCallback,
-    credentialToken: credentialToken,
+    loginStyle,
+    loginUrl,
+    credentialRequestCompleteCallback,
+    credentialToken,
   });
 };

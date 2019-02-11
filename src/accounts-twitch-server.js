@@ -1,67 +1,75 @@
-AccountsTwitch = {};
+AccountsTwitch = {}; // eslint-disable-line no-global-assign
 
-Oauth.registerService("twitch", 2, null, function(query) {
-  var response = getTokenResponse(query);
-  var accessToken = response.access_token;
-  var user = getUser(accessToken).data[0];
+OAuth.registerService("twitch", 2, null, query => {
+  const response = getTokenResponse(query);
+  const accessToken = response.access_token;
+  const user = getUser(accessToken).data[0];
 
-  user.id = user.id;
+  /* TODO: wtf ? user.id = user.id; */
 
-  var serviceData = _.extend(user, {accessToken: accessToken});
+  const serviceData = _.extend(user, { accessToken });
 
   return {
-    serviceData: serviceData,
+    serviceData,
     options: {
-      profile: {name: user.display_name},
-      services: {twitch: user},
+      profile: { name: user.display_name },
+      services: { twitch: user },
     },
   };
 });
 
-var getTokenResponse = function(query) {
-  var config = ServiceConfiguration.configurations.findOne({service: "twitch"});
+const getTokenResponse = function(query) {
+  const config = ServiceConfiguration.configurations.findOne({
+    service: "twitch",
+  });
 
   if (!config) throw new ServiceConfiguration.ConfigError();
 
-  var response;
+  let response;
   try {
     response = HTTP.post("https://id.twitch.tv/oauth2/token", {
       params: {
         code: query.code,
-        client_id: config.clientId,
-        redirect_uri: OAuth._redirectUri("twitch", config),
-        client_secret: OAuth.openSecret(config.secret),
-        grant_type: "authorization_code",
+        client_id: config.clientId, // eslint-disable-line camelcase
+        redirect_uri: OAuth._redirectUri("twitch", config), // eslint-disable-line camelcase
+        client_secret: OAuth.openSecret(config.secret), // eslint-disable-line camelcase
+        grant_type: "authorization_code", // eslint-disable-line camelcase
       },
     });
 
-    if (response.error)
-      // if the http response was an error
+    if (response.error) {
+      // If the http response was an error
       throw response.error;
-    if (typeof response.content === "string")
+    }
+
+    if (typeof response.content === "string") {
       response.content = JSON.parse(response.content);
-    if (response.content.error) throw response.content;
-  } catch (err) {
+    }
+
+    if (response.content.error) {
+      throw response.content;
+    }
+  } catch (error) {
     throw _.extend(
       new Error(
-        "Failed to complete OAuth handshake with Twitch. " + err.message
+        "Failed to complete OAuth handshake with Twitch. " + error.message
       ),
-      {response: err.response}
+      { response: error.response }
     );
   }
 
   return response.content;
 };
 
-var getUser = function(accessToken) {
+const getUser = function(accessToken) {
   try {
     return HTTP.get("https://api.twitch.tv/helix/users", {
-      headers: {Authorization: "Bearer " + accessToken},
+      headers: { Authorization: "Bearer " + accessToken },
     }).data;
-  } catch (err) {
+  } catch (error) {
     throw _.extend(
-      new Error("Failed to fetch identity from Twitch. " + err.message),
-      {response: err.response}
+      new Error("Failed to fetch identity from Twitch. " + error.message),
+      { response: error.response }
     );
   }
 };
@@ -70,5 +78,5 @@ AccountsTwitch.retrieveCredential = function(
   credentialToken,
   credentialSecret
 ) {
-  return Oauth.retrieveCredential(credentialToken, credentialSecret);
+  return OAuth.retrieveCredential(credentialToken, credentialSecret);
 };

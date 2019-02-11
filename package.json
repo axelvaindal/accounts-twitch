@@ -1,0 +1,81 @@
+{
+  "name": "accounts-twitch",
+  "private": true,
+  "version": "1.0.0-rc1",
+  "keywords": [
+    "twitch",
+    "accounts"
+  ],
+  "description": "A login service for Twitch.",
+  "scripts": {
+    "test": "jest",
+    "lint": "xo"
+  },
+  "author": "axelvaindal",
+  "license": "MIT",
+  "dependencies": {
+    "jstoolbox": "1.0.2"
+  },
+  "devDependencies": {
+    "jest": "24.0.0",
+    "xo": "0.24.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "singleQuote": false,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true
+  },
+  "xo": {
+    "space": 2,
+    "prettier": true,
+    "rules": {
+      "promise/prefer-await-to-then": "warn"
+    },
+    "ignores": [
+      "node_modules"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "tests/**"
+        ],
+        "globals": [
+          "describe",
+          "test",
+          "expect",
+          "afterEach",
+          "beforeEach",
+          "beforeAll",
+          "jest",
+          "jasmine"
+        ]
+      },
+      {
+        "files": [
+          "package.js"
+        ],
+        "globals": [
+          "Package"
+        ]
+      },
+      {
+        "files": [
+          "src/**"
+        ],
+        "globals": [
+          "Accounts",
+          "AccountsTwitch",
+          "OAuth",
+          "ServiceConfiguration",
+          "HTTP",
+          "Twitch",
+          "Random",
+          "Meteor",
+          "_"
+        ]
+      }
+    ]
+  }
+}

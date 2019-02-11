@@ -1,14 +1,14 @@
 Package.describe({
   name: "m4dnation:accounts-twitch",
 
-  version: "0.0.2",
+  version: "1.0.0-rc1",
 
   summary: "A login service for Twitch.",
 
   git: "https://github.com/M4dNation/accounts-twitch",
 });
 
-Package.onUse(function(api) {
+Package.onUse(api => {
   api.versionsFrom("1.8.0.2");
 
   api.use("ecmascript");

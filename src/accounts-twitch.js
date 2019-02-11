@@ -7,7 +7,7 @@ if (Meteor.isClient) {
       options = null;
     }
 
-    var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(
+    const credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(
       callback
     );
     Twitch.requestCredential(options, credentialRequestCompleteCallback);
