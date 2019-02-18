@@ -13,6 +13,30 @@ A login service for Twitch.
 
 ## Usage
 
+Once the package is added to your Meteor project, you need to configure the Twitch integration with the information from your Twitch application.  
+More information are available in the [documentation](https://dev.twitch.tv/docs/).
+Here is an exemple of configuration:
+
+```js
+// In any file loaded server side prior to any login attempt
+ServiceConfiguration.configurations.upsert(
+  { service: "twitch" },
+  {
+    $set: {
+      loginStyle: "popup",
+      clientId: "my-twitch-client-id",
+      redirectUri: "my-redirect-uri",
+      secret: "my-twitch-client-secret",
+    },
+  }
+);
+
+// In a client side file
+Meteor.loginWithTwitch({ requestPermissions: ["user:read:email"] }, err => {
+  // do something here if any error, or after login if no error
+});
+```
+
 ## Authors
 
 `accounts-twitch` is maintained by M4dNation Company.

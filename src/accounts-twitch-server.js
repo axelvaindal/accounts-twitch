@@ -5,8 +5,6 @@ OAuth.registerService("twitch", 2, null, query => {
   const accessToken = response.access_token;
   const user = getUser(accessToken).data[0];
 
-  /* TODO: wtf ? user.id = user.id; */
-
   const serviceData = _.extend(user, { accessToken });
 
   return {
@@ -23,7 +21,9 @@ const getTokenResponse = function(query) {
     service: "twitch",
   });
 
-  if (!config) throw new ServiceConfiguration.ConfigError();
+  if (!config) {
+    throw new ServiceConfiguration.ConfigError();
+  }
 
   let response;
   try {
