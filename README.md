@@ -14,7 +14,7 @@ A login service for Twitch.
 ## Usage
 
 Once the package is added to your Meteor project, you need to configure the Twitch integration with the information from your Twitch application.  
-More information are available in the [documentation](https://dev.twitch.tv/docs/).
+More information are available in the [documentation](https://dev.twitch.tv/docs/).  
 Here is an exemple of configuration:
 
 ```js
